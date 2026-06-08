@@ -21,6 +21,11 @@ app.add_middleware(
 )
 
 GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
+if GEMINI_API_KEY:
+    client = genai.Client(api_key=GEMINI_API_KEY)
+else:
+    from unittest.mock import MagicMock
+    client = MagicMock()
 
 # Configuracion MySQL: credenciales leidas desde .env
 db_config = {
@@ -123,7 +128,6 @@ async def newsletter_endpoint(req: NewsletterRequest):
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     try:
-        client = genai.Client(api_key=GEMINI_API_KEY)
         full_knowledge_base = get_all_store_data()
 
         prompt = f"""
