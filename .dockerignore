@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+
+# Secrets — never bake into the image
+.env
+
+# Git
+.git/
+.gitignore
+
+# Dev & test
+tests/
+pytest.ini
+requirements-dev.txt
+*.log
+
+# Build artefacts
+backup/
+
+# Large raw images — only processed variants (thumb/card/full) go in
+image/products/raw/
+
+# Docs
+*.md
+README_AUDIT.md
+MIGRATION_AUDIT.md
+MIGRATION_AUDIT_PRODUCTS.json
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Node (in case tooling adds it)
+node_modules/

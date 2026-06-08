@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Tu carrito de compra en GameX Store – Revisa tus productos y finaliza tu pedido.">
+    <title>Mi Carrito – GameX Store</title>
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/pro.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GameX Store">
+    <meta property="og:title" content="Tu Carrito — GameX Store">
+    <meta property="og:image" content="image/og/cart.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="image/og/cart.png">
+    <link rel="icon" href="image/icons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="image/icons/favicon-180.png">
+</head>
+<body class="cart-page">
+
+<header>
+    <img src="image/logo.png" alt="GameX Store" class="logo">
+    <nav id="main-nav">
+        <a href="index.html">Inicio</a>
+        <a href="servicios.html">Productos</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="blog/index.html">Blog</a>
+    </nav>
+</header>
+
+<div class="cart-page-wrap">
+    <h1 class="cart-page-title">🛒 Mi Carrito</h1>
+
+    <!-- Empty state -->
+    <div class="cart-empty-state" id="empty-state">
+        <span class="empty-icon">🛒</span>
+        <h2>Tu carrito está vacío</h2>
+        <p>¡Añade productos y vuelve aquí para finalizar tu compra!</p>
+        <a href="servicios.html" class="btn-go-shop">🎮 Ver productos</a>
+    </div>
+
+    <!-- Cart content -->
+    <div class="cart-layout" id="cart-content" style="display:none">
+
+        <!-- Items -->
+        <div class="cart-items-box">
+            <h3 id="items-title">Productos (0)</h3>
+            <div id="items-list"></div>
+        </div>
+
+        <!-- Summary -->
+        <div class="cart-summary">
+            <h3>📋 Resumen del pedido</h3>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <strong id="sum-sub">0 €</strong>
+            </div>
+            <div class="summary-row">
+                <span>Gastos de envío</span>
+                <strong id="sum-ship">—</strong>
+            </div>
+            <div class="summary-row total">
+                <span>Total</span>
+                <strong id="sum-total">0 €</strong>
+            </div>
+
+            <div class="summary-shipping" id="ship-msg">
+                🚚 Envío gratis en pedidos superiores a 50 €
+            </div>
+
+            <button class="btn-pay" id="btn-pay">💳 Finalizar compra</button>
+            <button class="btn-clear" id="btn-clear">🗑 Vaciar carrito</button>
+            <a href="servicios.html" class="cart-link-shop">← Seguir comprando</a>
+        </div>
+
+    </div>
+</div>
+
+<footer>
+    <div>© 2025 GameX Store · <a href="mailto:info@gamexstore.es">info@gamexstore.es</a></div>
+    <div class="socials">
+        <a href="https://www.twitch.tv/" target="_blank">
+            <img src="https://img.icons8.com/color/48/twitch--v2.png" alt="Twitch">
+        </a>
+        <a href="https://discord.com/" target="_blank">
+            <img src="https://img.icons8.com/color/48/discord-logo.png" alt="Discord">
+        </a>
+    </div>
+</footer>
+
+<script src="js/hamburger.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/pro.js"></script>
+<script src="js/cart.js"></script>
+<script>
+var SHIPPING_THRESHOLD = 50;
+var SHIPPING_COST      = 4.99;
+
+function renderPage() {
+    var cart    = window.GamexCart.get();
+    var empty   = document.getElementById("empty-state");
+    var content = document.getElementById("cart-content");
+    var list    = document.getElementById("items-list");
+    var title   = document.getElementById("items-title");
+
+    if (cart.length === 0) {
+        empty.classList.add("show");
+        content.style.display = "none";
+        return;
+    }
+
+    empty.classList.remove("show");
+    content.style.display = "grid";
+
+    /* Title */
+    var qty = cart.reduce(function(s,i){ return s+i.qty; }, 0);
+    title.textContent = "Productos (" + qty + ")";
+
+    /* Items */
+    list.innerHTML = "";
+    cart.forEach(function(item) {
+        var row = document.createElement("div");
+        row.className = "cp-item";
+        row.innerHTML =
+            '<div class="cp-img"><img src="' + item.img + '" alt="' + item.name + '" onerror="this.style.opacity=\'0.3\'"></div>' +
+            '<div class="cp-info">' +
+                '<div class="cp-brand">' + (item.brand || "") + '</div>' +
+                '<div class="cp-name">'  + item.name  + '</div>' +
+                '<div class="cp-unit">'  + item.price + ' € / unidad</div>' +
+            '</div>' +
+            '<div class="cp-qty">' +
+                '<button onclick="changeQty(' + item.id + ',-1)" aria-label="Reducir">−</button>' +
+                '<span>' + item.qty + '</span>' +
+                '<button onclick="changeQty(' + item.id + ',1)"  aria-label="Aumentar">+</button>' +
+            '</div>' +
+            '<div class="cp-subtotal">' + (item.price * item.qty) + ' €</div>' +
+            '<button class="cp-del" onclick="removeItem(' + item.id + ')" aria-label="Eliminar">✕</button>';
+        list.appendChild(row);
+    });
+
+    /* Summary */
+    var subtotal = cart.reduce(function(s,i){ return s + i.price*i.qty; }, 0);
+    var shipping = subtotal >= SHIPPING_THRESHOLD ? 0 : SHIPPING_COST;
+    var total    = subtotal + shipping;
+
+    document.getElementById("sum-sub").textContent   = subtotal.toFixed(2) + " €";
+    document.getElementById("sum-ship").textContent  = shipping === 0 ? "GRATIS 🎉" : shipping.toFixed(2) + " €";
+    document.getElementById("sum-total").textContent = total.toFixed(2) + " €";
+
+    var shipMsg = document.getElementById("ship-msg");
+    if (shipping === 0) {
+        shipMsg.innerHTML = "🎉 ¡Tienes envío gratuito!";
+        shipMsg.style.background = "#1aff8c11";
+        shipMsg.style.borderColor = "#1aff8c33";
+        shipMsg.style.color = "#1aff8c";
+    } else {
+        var diff = (SHIPPING_THRESHOLD - subtotal).toFixed(2);
+        shipMsg.innerHTML = "🚚 Te faltan <strong>" + diff + " €</strong> para envío gratis";
+        shipMsg.style.background = "#19A2FF11";
+        shipMsg.style.borderColor = "#19A2FF33";
+        shipMsg.style.color = "#19A2FF";
+    }
+}
+
+function changeQty(id, delta) {
+    window.GamexCart.change(id, delta);
+    renderPage();
+}
+
+function removeItem(id) {
+    window.GamexCart.remove(id);
+    renderPage();
+}
+
+document.getElementById("btn-pay").addEventListener("click", function() {
+    var cart = window.GamexCart.get();
+    if (cart.length === 0) return;
+    if (window.showToast) window.showToast("🎉 ¡Pedido realizado! Gracias por comprar en GameX Store", "success");
+    setTimeout(function() {
+        window.GamexCart.clear();
+        renderPage();
+    }, 800);
+});
+
+document.getElementById("btn-clear").addEventListener("click", function() {
+    if (!confirm("¿Seguro que quieres vaciar el carrito?")) return;
+    window.GamexCart.clear();
+    renderPage();
+});
+
+document.addEventListener("DOMContentLoaded", renderPage);
+</script>
+</body>
+</html>

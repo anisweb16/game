@@ -1,0 +1,26 @@
+# Secretos — NUNCA publicar
+.env
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+venv/
+.venv/
+
+# Tests — archivos temporales
+.coverage
+.coverage.*
+.pytest_cache/
+
+# Imagenes raw (temporales, regenerables con regen_images.py)
+image/products/raw/
+
+# IDEs y herramientas
+.vscode/
+.idea/
+.claude/
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,57 @@
+version: '3.8'
+
+# ── Services ──────────────────────────────────────────────────────────────────
+services:
+
+  # ── MySQL 8.0 ───────────────────────────────────────────────────────────────
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+      # bbdd.sql is executed automatically on first container start
+      - ./bbdd.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${DB_PASSWORD}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+
+  # ── FastAPI backend ──────────────────────────────────────────────────────────
+  backend:
+    build: .
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      # Override DB_HOST so the backend reaches the 'db' container, not localhost
+      DB_HOST: db
+      # Allow requests from the nginx frontend container (mapped to host port 5501)
+      ALLOWED_ORIGINS: "http://localhost:5501,http://127.0.0.1:5501"
+
+  # ── Nginx static frontend ───────────────────────────────────────────────────
+  frontend:
+    image: nginx:alpine
+    restart: unless-stopped
+    ports:
+      - "5501:80"
+    volumes:
+      - ./:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+
+# ── Volumes ───────────────────────────────────────────────────────────────────
+volumes:
+  mysql_data:
+    # Named volume: survives `docker compose down`; destroyed by `docker compose down -v`

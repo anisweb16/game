@@ -1,0 +1,831 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Catálogo GameX Store – Consolas, juegos y accesorios gaming al mejor precio.">
+    <title>Tienda – GameX Store</title>
+    <link rel="stylesheet" href="css/servicios.css">
+    <link rel="stylesheet" href="css/cart.css">
+    <link rel="stylesheet" href="css/pro.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/shared.css">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="GameX Store">
+    <meta property="og:title" content="Nuestros Productos — GameX Store">
+    <meta property="og:image" content="image/og/servicios.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="image/og/servicios.png">
+    <link rel="icon" href="image/icons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="image/icons/favicon-180.png">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+    <img src="image/logo.png" alt="GameX Store" class="logo">
+    <nav id="main-nav">
+        <a href="index.html">Inicio</a>
+        <a href="servicios.html" class="active">Tienda</a>
+        <a href="contacto.html">Contacto</a>
+        <a href="blog/index.html">Blog</a>
+    </nav>
+</header>
+
+<!-- QUICK VIEW MODAL -->
+<div id="qv-bg">
+    <div id="qv-modal" role="dialog" aria-modal="true">
+        <button id="qv-x" aria-label="Cerrar">✕</button>
+        <div class="qv-wrap">
+            <div class="qv-imgs">
+                <img id="qv-img" class="qv-main-img" src="" alt="">
+                <div class="qv-thumbs" id="qv-thumbs"></div>
+            </div>
+            <div class="qv-info">
+                <div class="qv-brand"  id="qv-brand"></div>
+                <h2  class="qv-name"   id="qv-name"></h2>
+                <div class="qv-stars-row">
+                    <span class="s" id="qv-stars"></span>
+                    <span class="r" id="qv-reviews"></span>
+                </div>
+                <div class="qv-price-row">
+                    <span class="qv-price" id="qv-price"></span>
+                    <span class="qv-old"   id="qv-old"></span>
+                    <span class="qv-save"  id="qv-save"></span>
+                </div>
+                <div class="qv-stock" id="qv-stock"></div>
+                <p   class="qv-desc"  id="qv-desc"></p>
+                <div class="qv-feats" id="qv-feats"></div>
+                <div class="qv-actions">
+                    <button class="btn-qv-add"  id="btn-qv-add">🛒 Añadir al carrito</button>
+                    <button class="btn-qv-wish" id="btn-qv-wish" aria-label="Wishlist">🤍</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- SHOP LAYOUT -->
+<div class="shop-wrap">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+
+        <!-- Categories -->
+        <div class="sb-box">
+            <div class="sb-title">Categorías</div>
+            <div class="cat-list" id="cat-list">
+                <button class="cat-item active" data-cat="all">🎮 Todos<span class="cat-count" id="cnt-all">32</span></button>
+                <button class="cat-item" data-cat="consola">🕹️ Consolas<span class="cat-count" id="cnt-consola">6</span></button>
+                <button class="cat-item" data-cat="accesorio">🖱️ Accesorios<span class="cat-count" id="cnt-accesorio">12</span></button>
+                <button class="cat-item" data-cat="juego">📀 Juegos<span class="cat-count" id="cnt-juego">14</span></button>
+            </div>
+        </div>
+
+        <!-- Price range -->
+        <div class="sb-box">
+            <div class="sb-title">Precio máximo</div>
+            <div class="price-range">
+                <input type="range" class="price-slider" id="price-slider" min="0" max="700" value="700" step="10">
+                <div class="price-row">
+                    <span>0 €</span>
+                    <span id="price-val">600 €</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Brands -->
+        <div class="sb-box">
+            <div class="sb-title">Marcas</div>
+            <div class="brand-list" id="brand-list">
+                <label class="brand-check"><input type="checkbox" value="Sony" checked><span>Sony / PlayStation</span></label>
+                <label class="brand-check"><input type="checkbox" value="Nintendo" checked><span>Nintendo</span></label>
+                <label class="brand-check"><input type="checkbox" value="Microsoft" checked><span>Microsoft / Xbox</span></label>
+                <label class="brand-check"><input type="checkbox" value="Razer" checked><span>Razer</span></label>
+                <label class="brand-check"><input type="checkbox" value="Logitech" checked><span>Logitech</span></label>
+                <label class="brand-check"><input type="checkbox" value="HyperX" checked><span>HyperX</span></label>
+                <label class="brand-check"><input type="checkbox" value="LG" checked><span>LG</span></label>
+            </div>
+        </div>
+
+        <!-- Rating -->
+        <div class="sb-box">
+            <div class="sb-title">Valoración mínima</div>
+            <div class="rating-list" id="rating-list">
+                <button class="rating-item active" data-rating="0"><span class="stars">★★★★★</span><span>Todas</span></button>
+                <button class="rating-item" data-rating="4"><span class="stars">★★★★☆</span><span>4+ estrellas</span></button>
+                <button class="rating-item" data-rating="5"><span class="stars">★★★★★</span><span>5 estrellas</span></button>
+            </div>
+        </div>
+
+    </aside>
+
+    <!-- MAIN -->
+    <div class="shop-main">
+
+        <!-- Top bar -->
+        <div class="shop-topbar">
+            <div class="results-count" id="results-count">
+                <strong>15</strong> productos
+            </div>
+            <div class="topbar-right">
+                <select class="sort-sel" id="sort-sel">
+                    <option value="">Más relevantes</option>
+                    <option value="price-asc">Precio: menor a mayor</option>
+                    <option value="price-desc">Precio: mayor a menor</option>
+                    <option value="rating">Mejor valorados</option>
+                    <option value="name">Nombre A–Z</option>
+                </select>
+                <div class="view-btns">
+                    <button class="view-btn active" id="btn-grid" aria-label="Vista cuadrícula">⊞</button>
+                    <button class="view-btn" id="btn-list" aria-label="Vista lista">☰</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Grid -->
+        <div class="pgrid" id="pgrid"></div>
+
+        <!-- Pagination -->
+        <div class="pagination" id="pagination"></div>
+
+    </div>
+</div>
+
+<footer>
+    <div>© 2025 GameX Store · <a href="mailto:info@gamexstore.es">info@gamexstore.es</a></div>
+    <div class="socials">
+        <a href="https://www.twitch.tv/" target="_blank"><img src="https://img.icons8.com/color/48/twitch--v2.png" alt="Twitch"></a>
+        <a href="https://discord.com/" target="_blank"><img src="https://img.icons8.com/color/48/discord-logo.png" alt="Discord"></a>
+    </div>
+</footer>
+
+<script src="js/hamburger.js"></script>
+<script src="js/effects.js"></script>
+<script src="js/pro.js"></script>
+<script src="js/cart.js"></script>
+<script>
+/* ═══════════════════════════════════════════
+   PRODUCT DATA — 15 products
+   Images: Wikipedia Commons (stable, no auth)
+   onerror → local fallback
+═══════════════════════════════════════════ */
+var PRODUCTS = [
+  {
+    id:1, cat:"consola", brand:"Sony", brandFull:"Sony · PlayStation",
+    name:"PlayStation 5 Disc Edition",
+    desc:"La consola next-gen de Sony con lector de discos. 4K a 120fps, SSD ultrarrápido, mando DualSense con feedback háptico y vibración adaptativa. La experiencia gaming definitiva.",
+    price:499, oldPrice:null, stars:5, reviews:1248,
+    badge:"hot", badgeText:"🔥 Más vendido",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["4K 120fps","SSD 825GB","DualSense","Bluetooth 5.1","Wi-Fi 6"],
+    img:"image/products/card/1.webp",
+    thumbs:["image/products/thumb/1.webp"],
+    fb:"image/PS5.png"
+  },
+  {
+    id:2, cat:"consola", brand:"Nintendo", brandFull:"Nintendo",
+    name:"Nintendo Switch OLED",
+    desc:"Pantalla OLED de 7 pulgadas, base LAN integrada y 64GB de almacenamiento interno. Juega en casa o en modo portátil donde quieras.",
+    price:329, oldPrice:399, stars:5, reviews:2312,
+    badge:"sale", badgeText:"💸 -18%",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Pantalla OLED 7\"","64GB","LAN integrada","Batería 9h","Modo TV/Mesa/Portátil"],
+    img:"image/products/card/2.webp",
+    thumbs:["image/products/thumb/2.webp"],
+    fb:"image/nintando.png"
+  },
+  {
+    id:3, cat:"consola", brand:"Microsoft", brandFull:"Microsoft · Xbox",
+    name:"Xbox Series X",
+    desc:"12 teraflops de potencia gráfica, SSD Velocity de 1TB y retrocompatibilidad total con miles de juegos. Compatible con Xbox Game Pass.",
+    price:499, oldPrice:null, stars:5, reviews:876,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["12 Teraflops","SSD 1TB","4K 120fps","Retrocompatible","Game Pass Ready"],
+    img:"image/products/card/3.webp",
+    thumbs:["image/products/thumb/3.webp"],
+    fb:"image/PS5.png"
+  },
+  {
+    id:4, cat:"consola", brand:"Nintendo", brandFull:"Nintendo",
+    name:"Nintendo Switch Lite",
+    desc:"Versión compacta y económica de la Switch. Diseño portátil ultraligero ideal para jugar fuera de casa. Compatible con la mayoría de juegos Switch.",
+    price:219, oldPrice:null, stars:4, reviews:1543,
+    badge:"new", badgeText:"🆕 Nuevo",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Pantalla 5.5\"","32GB","Batería 7h","Ultra ligera","4 colores"],
+    img:"image/products/card/4.webp",
+    thumbs:["image/products/thumb/4.webp"],
+    fb:"image/nintando.png"
+  },
+  {
+    id:5, cat:"accesorio", brand:"Razer", brandFull:"Razer · Kraken V3",
+    name:"Auriculares Razer Kraken V3",
+    desc:"Sonido envolvente THX 7.1, micrófono retráctil con cancelación de ruido y almohadillas de memory foam. Compatible con PC, PS5 y Switch.",
+    price:99, oldPrice:null, stars:4, reviews:432,
+    badge:"new", badgeText:"🆕 Nuevo",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["THX 7.1","Mic cancelación ruido","Memory foam","USB-A","PC/PS5/Switch"],
+    img:"image/products/card/5.webp",
+    thumbs:["image/products/thumb/5.webp"],
+    fb:"image/casko.png"
+  },
+  {
+    id:6, cat:"accesorio", brand:"Razer", brandFull:"Razer · BlackWidow V4",
+    name:"Teclado Razer BlackWidow V4",
+    desc:"Teclado mecánico con switches Green clicky, iluminación RGB Chroma por tecla, anti-ghosting completo y macro keys dedicadas.",
+    price:120, oldPrice:null, stars:5, reviews:678,
+    badge:"hot", badgeText:"🔥 Top ventas",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Switches Green","RGB Chroma","Anti-ghosting","Macro keys","Reposamanos"],
+    img:"image/products/card/6.webp",
+    thumbs:["image/products/thumb/6.webp"],
+    fb:"image/teclado.png"
+  },
+  {
+    id:7, cat:"accesorio", brand:"Razer", brandFull:"Razer · DeathAdder V3",
+    name:"Ratón Razer DeathAdder V3",
+    desc:"Sensor óptico Focus Pro de 30.000 DPI, 8 botones programables, RGB Chroma y diseño ergonómico ultra ligero de 59g. Ideal para FPS y MMO.",
+    price:110, oldPrice:null, stars:5, reviews:891,
+    badge:"new", badgeText:"🆕 Nuevo",
+    stock:"low", stockText:"⚡ Quedan 3 unidades",
+    feats:["30.000 DPI","59 gramos","8 botones","RGB Chroma","Sensor Focus Pro"],
+    img:"image/products/card/7.webp",
+    thumbs:["image/products/thumb/7.webp"],
+    fb:"image/souris.png"
+  },
+  {
+    id:8, cat:"accesorio", brand:"LG", brandFull:"LG · UltraGear",
+    name:"Monitor LG UltraGear 27\" 144Hz",
+    desc:"Panel IPS Full HD 27\" a 144Hz, 1ms GtG, compatible G-Sync y FreeSync Premium. Ideal para e-sports y gaming competitivo.",
+    price:280, oldPrice:329, stars:4, reviews:234,
+    badge:"sale", badgeText:"💸 -15%",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["27\" IPS Full HD","144Hz","1ms GtG","G-Sync / FreeSync","HDR10"],
+    img:"image/products/card/8.webp",
+    thumbs:["image/products/thumb/8.webp"],
+    fb:"image/teclado.png"
+  },
+  {
+    id:9, cat:"accesorio", brand:"Logitech", brandFull:"Logitech · G Pro X",
+    name:"Auriculares Logitech G Pro X",
+    desc:"Auriculares gaming con tecnología Blue VO!CE, sonido DTS 7.1 y almohadillas intercambiables de cuero o espuma. El preferido de los jugadores profesionales.",
+    price:129, oldPrice:null, stars:5, reviews:567,
+    badge:"excl", badgeText:"⭐ Pro Edition",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Blue VO!CE","DTS 7.1","Almohadillas intercambiables","Mic desmontable","PC/PS/Xbox"],
+    img:"image/products/card/9.webp",
+    thumbs:["image/products/thumb/9.webp"],
+    fb:"image/casko.png"
+  },
+  {
+    id:10, cat:"accesorio", brand:"HyperX", brandFull:"HyperX · Alloy Origins",
+    name:"Teclado HyperX Alloy Origins",
+    desc:"Teclado mecánico compacto TKL con switches HyperX Red lineales, construcción de aluminio y iluminación RGB personalizable.",
+    price:89, oldPrice:109, stars:4, reviews:312,
+    badge:"sale", badgeText:"💸 Oferta",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Switches HyperX Red","Aluminio","TKL compacto","RGB personalizable","Anti-ghosting 100%"],
+    img:"image/products/card/10.webp",
+    thumbs:["image/products/thumb/10.webp"],
+    fb:"image/teclado.png"
+  },
+  {
+    id:11, cat:"juego", brand:"Sony", brandFull:"Sony · PS5 Exclusivo",
+    name:"Spider-Man 2",
+    desc:"Marvel's Spider-Man 2 para PS5. Peter Parker y Miles Morales en un Nueva York de mundo abierto con gráficos next-gen y carga casi instantánea.",
+    price:70, oldPrice:null, stars:5, reviews:2134,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Exclusivo PS5","Mundo abierto","2 protagonistas","4K HDR","DualSense"],
+    img:"image/products/card/11.webp",
+    thumbs:["image/products/thumb/11.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:12, cat:"juego", brand:"Nintendo", brandFull:"Nintendo · Switch",
+    name:"Zelda: Tears of the Kingdom",
+    desc:"La obra maestra de Nintendo. El mundo abierto más grande de Hyrule con mecánicas de construcción únicas y una historia épica. GOTY 2023.",
+    price:60, oldPrice:null, stars:5, reviews:1876,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["GOTY 2023","Mundo abierto","Switch exclusivo","50+ horas","Co-op local"],
+    img:"image/products/card/12.webp",
+    thumbs:["image/products/thumb/12.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:13, cat:"juego", brand:"Sony", brandFull:"Sony · PS5",
+    name:"God of War Ragnarök",
+    desc:"Kratos y Atreus en un viaje épico por los Nueve Reinos. Combate brutal, exploración magistral y la mejor historia del año. GOTY 2022.",
+    price:55, oldPrice:70, stars:5, reviews:2876,
+    badge:"sale", badgeText:"💸 Oferta",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["GOTY 2022","PS5 / PS4","Historia épica","DualSense háptico","+40 horas"],
+    img:"image/products/card/13.webp",
+    thumbs:["image/products/thumb/13.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:14, cat:"juego", brand:"Nintendo", brandFull:"Nintendo · Switch",
+    name:"Mario Kart 8 Deluxe",
+    desc:"El juego de carreras más vendido de la historia. 48 pistas, 40+ personajes y multijugador local para 4 jugadores.",
+    price:55, oldPrice:null, stars:5, reviews:3421,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["48 pistas","40+ personajes","4 jugadores local","Online multiplayer","DLC incluido"],
+    img:"image/products/card/14.webp",
+    thumbs:["image/products/thumb/14.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:15, cat:"juego", brand:"Sony", brandFull:"Sony · PS5",
+    name:"Stellar Blade",
+    desc:"Acción RPG exclusivo PS5 con combates espectaculares, gráficos next-gen y una historia de ciencia ficción que te mantendrá enganchado.",
+    price:70, oldPrice:null, stars:5, reviews:654,
+    badge:"new", badgeText:"🆕 Nuevo",
+    stock:"low", stockText:"⚡ Últimas unidades",
+    feats:["Exclusivo PS5","Acción RPG","4K HDR","DualSense","60fps"],
+    img:"image/products/card/15.webp",
+    thumbs:["image/products/thumb/15.webp"],
+    fb:"image/juegos.png"
+  },
+  /* ── CONSOLAS extra ── */
+  {
+    id:16, cat:"consola", brand:"Sony", brandFull:"Sony · PlayStation",
+    name:"PS5 Slim Digital Edition",
+    desc:"La versión más compacta y ligera de la PS5. Sin lector de discos, perfecta para jugar en digital. Mismo rendimiento 4K que el modelo estándar.",
+    price:399, oldPrice:449, stars:5, reviews:874,
+    badge:"sale", badgeText:"💸 -11%",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["4K 120fps","SSD 1TB","DualSense","30% más compacta","Wi-Fi 6"],
+    img:"image/products/card/16.webp",
+    thumbs:["image/products/thumb/16.webp"],
+    fb:"image/PS5.png"
+  },
+  {
+    id:17, cat:"consola", brand:"Microsoft", brandFull:"Microsoft · Xbox",
+    name:"Xbox Series S",
+    desc:"La consola Xbox más accesible. Diseño compacto en blanco, 512GB SSD y soporte para juegos a 1440p. Ideal para jugar con Game Pass.",
+    price:299, oldPrice:null, stars:4, reviews:1203,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["1440p 120fps","SSD 512GB","Game Pass Ready","Retrocompatible","4K streaming"],
+    img:"image/products/card/17.webp",
+    thumbs:["image/products/thumb/17.webp"],
+    fb:"image/PS5.png"
+  },
+  /* ── ACCESORIOS extra ── */
+  {
+    id:18, cat:"accesorio", brand:"Sony", brandFull:"Sony · PlayStation",
+    name:"DualSense Edge Controller",
+    desc:"El mando inalámbrico premium de PS5 con palancas intercambiables, botones traseros programables y perfiles de juego personalizables.",
+    price:219, oldPrice:null, stars:5, reviews:432,
+    badge:"excl", badgeText:"⭐ Premium",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Palancas intercambiables","Botones traseros","Perfil personalizable","USB-C","Inalámbrico"],
+    img:"image/products/card/18.webp",
+    thumbs:["image/products/thumb/18.webp"],
+    fb:"image/casko.png"
+  },
+  {
+    id:19, cat:"accesorio", brand:"Microsoft", brandFull:"Microsoft · Xbox",
+    name:"Xbox Elite Controller Series 2",
+    desc:"El mando premium de Xbox con palancas de tensión ajustable, D-pad facetado, 4 botones traseros y batería de hasta 40 horas.",
+    price:179, oldPrice:199, stars:5, reviews:876,
+    badge:"sale", badgeText:"💸 Oferta",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Palancas ajustables","D-pad facetado","4 botones traseros","40h batería","USB-C"],
+    img:"image/products/card/19.webp",
+    thumbs:["image/products/thumb/19.webp"],
+    fb:"image/casko.png"
+  },
+  {
+    id:20, cat:"accesorio", brand:"Razer", brandFull:"Razer · Basilisk V3",
+    name:"Ratón Razer Basilisk V3",
+    desc:"Ratón gaming con rueda de desplazamiento multifunción HyperScroll, sensor Focus+ de 26.000 DPI y 11 botones programables con RGB Chroma.",
+    price:89, oldPrice:null, stars:5, reviews:1021,
+    badge:"hot", badgeText:"🔥 Más vendido",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["26.000 DPI","HyperScroll","11 botones","RGB Chroma","USB"],
+    img:"image/products/card/20.webp",
+    thumbs:["image/products/thumb/20.webp"],
+    fb:"image/souris.png"
+  },
+  {
+    id:21, cat:"accesorio", brand:"Logitech", brandFull:"Logitech · G915",
+    name:"Teclado Logitech G915 TKL",
+    desc:"Teclado mecánico inalámbrico de perfil ultra bajo con switches GL, iluminación RGB LIGHTSYNC y hasta 40 horas de batería.",
+    price:199, oldPrice:229, stars:5, reviews:654,
+    badge:"sale", badgeText:"💸 -13%",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Switches GL","Inalámbrico","40h batería","RGB LIGHTSYNC","Ultra bajo perfil"],
+    img:"image/products/card/21.webp",
+    thumbs:["image/products/thumb/21.webp"],
+    fb:"image/teclado.png"
+  },
+  {
+    id:22, cat:"accesorio", brand:"HyperX", brandFull:"HyperX · Cloud Alpha",
+    name:"Auriculares HyperX Cloud Alpha",
+    desc:"Auriculares gaming con drivers duales de cámara, sonido estéreo de alta fidelidad, micrófono desmontable con cancelación de ruido y compatibilidad multiplataforma.",
+    price:79, oldPrice:99, stars:5, reviews:2341,
+    badge:"sale", badgeText:"💸 -20%",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Drivers duales","Micrófono desmontable","PC/PS/Xbox/Switch","Aluminio","Cable trenzado"],
+    img:"image/products/card/22.webp",
+    thumbs:["image/products/thumb/22.webp"],
+    fb:"image/casko.png"
+  },
+  {
+    id:23, cat:"accesorio", brand:"LG", brandFull:"LG · UltraGear",
+    name:"Monitor LG 32\" 4K 144Hz",
+    desc:"Monitor gaming 32 pulgadas 4K UHD con panel Nano IPS, 144Hz, 1ms GtG, HDMI 2.1 para PS5 y Xbox Series X. La pantalla definitiva para gaming.",
+    price:599, oldPrice:699, stars:5, reviews:312,
+    badge:"sale", badgeText:"💸 -14%",
+    stock:"low", stockText:"⚡ Pocas unidades",
+    feats:["32\" 4K UHD","Nano IPS","144Hz","HDMI 2.1","G-Sync/FreeSync"],
+    img:"image/products/card/23.webp",
+    thumbs:["image/products/thumb/23.webp"],
+    fb:"image/teclado.png"
+  },
+  {
+    id:24, cat:"accesorio", brand:"Razer", brandFull:"Razer · Goliathus Extended",
+    name:"Alfombrilla Razer Goliathus XXL",
+    desc:"Alfombrilla de tela suave de tamaño XXL (920x294mm) con superficie optimizada para sensores de baja y alta DPI y base antideslizante de goma.",
+    price:39, oldPrice:null, stars:4, reviews:876,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["920x294mm","Superficie suave","Base antideslizante","Costura perimetral","Lavable"],
+    img:"image/products/card/24.webp",
+    thumbs:["image/products/thumb/24.webp"],
+    fb:"image/teclado.png"
+  },
+  {
+    id:25, cat:"accesorio", brand:"Sony", brandFull:"Sony · PlayStation",
+    name:"PULSE 3D Wireless Headset",
+    desc:"Los auriculares oficiales de PS5 con audio 3D Tempest, micrófono dual con reducción de ruido y conectividad USB inalámbrica. Perfecto para el ecosistema PlayStation.",
+    price:99, oldPrice:null, stars:5, reviews:1543,
+    badge:"excl", badgeText:"⭐ PS5 Oficial",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Audio 3D Tempest","Dual mic","USB inalámbrico","12h batería","PS5/PS4/PC"],
+    img:"image/products/card/25.webp",
+    thumbs:["image/products/thumb/25.webp"],
+    fb:"image/casko.png"
+  },
+  /* ── JUEGOS extra ── */
+  {
+    id:26, cat:"juego", brand:"Nintendo", brandFull:"Nintendo · Switch",
+    name:"Super Mario Bros. Wonder",
+    desc:"La nueva aventura 2D de Mario más innovadora en décadas. Con la flor Wonder que transforma el juego radicalmente en cada nivel. Para toda la familia.",
+    price:55, oldPrice:null, stars:5, reviews:2109,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Switch exclusivo","Co-op 4 jugadores","40+ niveles","Flower Wonder","Acción 2D"],
+    img:"image/products/card/26.webp",
+    thumbs:["image/products/thumb/26.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:27, cat:"juego", brand:"Sony", brandFull:"Sony · PS5",
+    name:"Demon's Souls Remake",
+    desc:"El remake definitivo del legendario Demon's Souls. Gráficos completamente renovados a 4K, mantiene la dificultad brutal que lo hizo legendario. Exclusivo PS5.",
+    price:45, oldPrice:70, stars:5, reviews:987,
+    badge:"sale", badgeText:"💸 Oferta",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Exclusivo PS5","4K HDR","60fps","Soulslike","Remake completo"],
+    img:"image/products/card/27.webp",
+    thumbs:["image/products/thumb/27.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:28, cat:"juego", brand:"Nintendo", brandFull:"Nintendo · Switch",
+    name:"Pokémon Escarlata",
+    desc:"La nueva generación de Pokémon en mundo abierto. Explora la región de Paldea libremente, captura más de 400 Pokémon y disfruta del modo multijugador online.",
+    price:55, oldPrice:null, stars:4, reviews:3210,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Mundo abierto","400+ Pokémon","Co-op 4 jugadores","Online","Switch exclusivo"],
+    img:"image/products/card/28.webp",
+    thumbs:["image/products/thumb/28.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:29, cat:"juego", brand:"Microsoft", brandFull:"Microsoft · Xbox",
+    name:"Forza Horizon 5",
+    desc:"El mejor juego de conducción en mundo abierto. Ambientado en México con más de 500 coches, entorno dinámico con volcanes, selvas y playas. Incluido en Game Pass.",
+    price:40, oldPrice:60, stars:5, reviews:4321,
+    badge:"sale", badgeText:"💸 Oferta",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["500+ coches","Mundo abierto","4K 60fps","Multijugador","Game Pass"],
+    img:"image/products/card/29.webp",
+    thumbs:["image/products/thumb/29.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:30, cat:"juego", brand:"Sony", brandFull:"Sony · PS5 / PS4",
+    name:"Final Fantasy XVI",
+    desc:"Una nueva saga épica de Final Fantasy. Combate de acción frenético con invocaciones gigantescas, historia madura y gráficos impresionantes. Exclusivo PlayStation.",
+    price:60, oldPrice:70, stars:5, reviews:1456,
+    badge:"sale", badgeText:"💸 Oferta",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["PS5 exclusivo","Acción RPG","Historia épica","40+ horas","Invocaciones"],
+    img:"image/products/card/30.webp",
+    thumbs:["image/products/thumb/30.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:31, cat:"juego", brand:"Nintendo", brandFull:"Nintendo · Switch",
+    name:"Animal Crossing: New Horizons",
+    desc:"Crea tu isla paradisíaca, personaliza tu vida y conecta con amigos. El juego más relajante y adictivo de Nintendo Switch. Millones de horas de contenido.",
+    price:45, oldPrice:null, stars:5, reviews:5670,
+    badge:null,
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Switch exclusivo","Online co-op","Personalización total","Updates gratuitos","Familia"],
+    img:"image/products/card/31.webp",
+    thumbs:["image/products/thumb/31.webp"],
+    fb:"image/juegos.png"
+  },
+  {
+    id:32, cat:"juego", brand:"Microsoft", brandFull:"Microsoft · Xbox / PC",
+    name:"Halo Infinite",
+    desc:"El regreso del Jefe Maestro en una aventura de mundo abierto. Campaña épica, multijugador gratuito y el mejor Halo en años. Incluido en Game Pass.",
+    price:35, oldPrice:60, stars:4, reviews:2890,
+    badge:"sale", badgeText:"💸 -42%",
+    stock:"ok", stockText:"✓ En stock",
+    feats:["Mundo abierto","Multijugador gratis","Game Pass","4K","Co-op campaña"],
+    img:"image/products/card/32.webp",
+    thumbs:["image/products/thumb/32.webp"],
+    fb:"image/juegos.png"
+  }
+];
+
+/* ═══════════════════════════════════
+   STATE
+═══════════════════════════════════ */
+var state = {
+    cat:      "all",
+    maxPrice: 700,
+    brands:   ["Sony","Nintendo","Microsoft","Razer","Logitech","HyperX","LG"],
+    rating:   0,
+    sort:     "",
+    view:     "grid",
+    page:     1,
+    perPage:  12,
+    wishlist: JSON.parse(localStorage.getItem("gamex-wish") || "[]")
+};
+
+/* ═══════════════════════════════════
+   FILTER + SORT
+═══════════════════════════════════ */
+function getFiltered() {
+    return PRODUCTS.filter(function(p) {
+        if (state.cat !== "all" && p.cat !== state.cat) return false;
+        if (p.price > state.maxPrice) return false;
+        if (!state.brands.includes(p.brand)) return false;
+        if (p.stars < state.rating) return false;
+        return true;
+    });
+}
+
+function getSorted(list) {
+    var arr = list.slice();
+    if (state.sort === "price-asc")  arr.sort(function(a,b){ return a.price - b.price; });
+    if (state.sort === "price-desc") arr.sort(function(a,b){ return b.price - a.price; });
+    if (state.sort === "rating")     arr.sort(function(a,b){ return b.stars - a.stars || b.reviews - a.reviews; });
+    if (state.sort === "name")       arr.sort(function(a,b){ return a.name.localeCompare(b.name); });
+    return arr;
+}
+
+/* ═══════════════════════════════════
+   RENDER
+═══════════════════════════════════ */
+function starStr(n, total) {
+    total = total || 5;
+    return "★".repeat(n) + "☆".repeat(total - n);
+}
+
+function saveStr(p) {
+    if (!p.oldPrice) return "";
+    return "-" + Math.round((1 - p.price / p.oldPrice) * 100) + "%";
+}
+
+function renderCard(p) {
+    var isWish = state.wishlist.includes(p.id);
+    return '<article class="p-card" data-id="' + p.id + '">' +
+        (p.badge ? '<span class="p-badge ' + p.badge + '">' + p.badgeText + '</span>' : '') +
+        '<button class="p-wish' + (isWish ? ' active' : '') + '" onclick="toggleWish(event,' + p.id + ')" aria-label="Wishlist">' +
+            (isWish ? '❤️' : '🤍') +
+        '</button>' +
+        '<div class="p-img" onclick="openQV(' + p.id + ')">' +
+            '<img src="' + p.img + '" onerror="this.src=\'' + p.fb + '\'" alt="' + p.name + '" loading="lazy">' +
+        '</div>' +
+        '<div class="p-body">' +
+            '<div class="p-brand">' + p.brandFull + '</div>' +
+            '<div class="p-name">'  + p.name + '</div>' +
+            '<div class="p-stars">' +
+                '<span class="s">' + starStr(p.stars) + '</span>' +
+                '<span class="r">(' + p.reviews.toLocaleString() + ')</span>' +
+            '</div>' +
+            '<div class="p-footer">' +
+                '<div class="p-prices">' +
+                    (p.oldPrice ? '<span class="p-old">' + p.oldPrice + ' €</span>' : '') +
+                    '<span class="p-price">' + p.price + ' €</span>' +
+                    (p.oldPrice ? '<span class="p-save">' + saveStr(p) + '</span>' : '') +
+                '</div>' +
+                '<div class="p-stock ' + p.stock + '">' + p.stockText + '</div>' +
+                '<div class="p-actions">' +
+                    '<button class="btn-add" onclick="addToCart(' + p.id + ')">🛒 Añadir</button>' +
+                    '<button class="btn-qv"  onclick="openQV(' + p.id + ')">👁</button>' +
+                '</div>' +
+            '</div>' +
+        '</div>' +
+    '</article>';
+}
+
+function render() {
+    var filtered = getFiltered();
+    var sorted   = getSorted(filtered);
+    var total    = sorted.length;
+    var pages    = Math.ceil(total / state.perPage) || 1;
+    if (state.page > pages) state.page = 1;
+
+    var start = (state.page - 1) * state.perPage;
+    var paged = sorted.slice(start, start + state.perPage);
+
+    var grid = document.getElementById("pgrid");
+    grid.className = "pgrid" + (state.view === "list" ? " list-view" : "");
+    grid.innerHTML = paged.map(renderCard).join("");
+
+    document.getElementById("results-count").innerHTML =
+        "<strong>" + total + "</strong> producto" + (total !== 1 ? "s" : "");
+
+    renderPagination(pages);
+}
+
+function renderPagination(pages) {
+    var pg = document.getElementById("pagination");
+    if (pages <= 1) { pg.innerHTML = ""; return; }
+    var html = '<button class="pg-btn" onclick="goPage(' + (state.page - 1) + ')" ' + (state.page <= 1 ? "disabled" : "") + '>‹</button>';
+    for (var i = 1; i <= pages; i++) {
+        html += '<button class="pg-btn' + (i === state.page ? " active" : "") + '" onclick="goPage(' + i + ')">' + i + '</button>';
+    }
+    html += '<button class="pg-btn" onclick="goPage(' + (state.page + 1) + ')" ' + (state.page >= pages ? "disabled" : "") + '>›</button>';
+    pg.innerHTML = html;
+}
+
+function goPage(n) { state.page = n; render(); window.scrollTo({top:0, behavior:"smooth"}); }
+
+/* ═══════════════════════════════════
+   FILTER EVENTS
+═══════════════════════════════════ */
+document.querySelectorAll(".cat-item").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+        document.querySelectorAll(".cat-item").forEach(function(b){ b.classList.remove("active"); });
+        this.classList.add("active");
+        state.cat = this.dataset.cat;
+        state.page = 1;
+        render();
+    });
+});
+
+var priceSlider = document.getElementById("price-slider");
+priceSlider.addEventListener("input", function() {
+    state.maxPrice = +this.value;
+    document.getElementById("price-val").textContent = this.value + " €";
+    var pct = (this.value / 700 * 100) + "%";
+    this.style.setProperty("--pct", pct);
+    state.page = 1;
+    render();
+});
+
+document.querySelectorAll("#brand-list input").forEach(function(cb) {
+    cb.addEventListener("change", function() {
+        state.brands = Array.from(document.querySelectorAll("#brand-list input:checked")).map(function(x){ return x.value; });
+        state.page = 1;
+        render();
+    });
+});
+
+document.querySelectorAll(".rating-item").forEach(function(btn) {
+    btn.addEventListener("click", function() {
+        document.querySelectorAll(".rating-item").forEach(function(b){ b.classList.remove("active"); });
+        this.classList.add("active");
+        state.rating = +this.dataset.rating;
+        state.page = 1;
+        render();
+    });
+});
+
+document.getElementById("sort-sel").addEventListener("change", function() {
+    state.sort = this.value;
+    state.page = 1;
+    render();
+});
+
+document.getElementById("btn-grid").addEventListener("click", function() {
+    state.view = "grid";
+    document.getElementById("btn-grid").classList.add("active");
+    document.getElementById("btn-list").classList.remove("active");
+    render();
+});
+document.getElementById("btn-list").addEventListener("click", function() {
+    state.view = "list";
+    document.getElementById("btn-list").classList.add("active");
+    document.getElementById("btn-grid").classList.remove("active");
+    render();
+});
+
+/* ═══════════════════════════════════
+   CART
+═══════════════════════════════════ */
+function addToCart(id) {
+    var p = PRODUCTS.find(function(x){ return x.id === id; });
+    if (p) window.GamexCart.add({ id:p.id, name:p.name, price:p.price, img:p.img, brand:p.brandFull });
+}
+
+/* ═══════════════════════════════════
+   WISHLIST
+═══════════════════════════════════ */
+function toggleWish(e, id) {
+    e.stopPropagation();
+    var idx = state.wishlist.indexOf(id);
+    if (idx > -1) { state.wishlist.splice(idx, 1); }
+    else          { state.wishlist.push(id); }
+    localStorage.setItem("gamex-wish", JSON.stringify(state.wishlist));
+    var btn = e.currentTarget;
+    var active = state.wishlist.includes(id);
+    btn.classList.toggle("active", active);
+    btn.textContent = active ? "❤️" : "🤍";
+    if (window.showToast) window.showToast(active ? "❤️ Añadido a favoritos" : "Eliminado de favoritos", "info");
+}
+
+/* ═══════════════════════════════════
+   QUICK VIEW
+═══════════════════════════════════ */
+var qvId = null;
+
+function openQV(id) {
+    var p = PRODUCTS.find(function(x){ return x.id === id; });
+    if (!p) return;
+    qvId = id;
+
+    var img = document.getElementById("qv-img");
+    img.src = p.img; img.onerror = function(){ this.src = p.fb; }; img.alt = p.name;
+
+    /* Thumbnails */
+    var thumbsEl = document.getElementById("qv-thumbs");
+    thumbsEl.innerHTML = p.thumbs.map(function(src, i) {
+        return '<img class="qv-thumb' + (i===0?" active":"") + '" src="' + src + '" onerror="this.src=\'' + p.fb + '\'" onclick="switchThumb(this,\'' + src + '\')" alt="">';
+    }).join("");
+
+    document.getElementById("qv-brand").textContent    = p.brandFull;
+    document.getElementById("qv-name").textContent     = p.name;
+    document.getElementById("qv-stars").textContent    = starStr(p.stars);
+    document.getElementById("qv-reviews").textContent  = "(" + p.reviews.toLocaleString() + " reseñas)";
+    document.getElementById("qv-price").textContent    = p.price + " €";
+    document.getElementById("qv-old").textContent      = p.oldPrice ? p.oldPrice + " €" : "";
+    document.getElementById("qv-save").textContent     = saveStr(p);
+    document.getElementById("qv-stock").className      = "qv-stock " + p.stock;
+    document.getElementById("qv-stock").textContent    = p.stockText;
+    document.getElementById("qv-desc").textContent     = p.desc;
+    document.getElementById("qv-feats").innerHTML      = p.feats.map(function(f){ return '<span class="qv-feat">✓ ' + f + '</span>'; }).join("");
+
+    var isWish = state.wishlist.includes(id);
+    document.getElementById("btn-qv-wish").textContent = isWish ? "❤️" : "🤍";
+
+    document.getElementById("qv-bg").classList.add("open");
+    document.body.style.overflow = "hidden";
+}
+
+function switchThumb(el, src) {
+    document.getElementById("qv-img").src = src;
+    document.querySelectorAll(".qv-thumb").forEach(function(t){ t.classList.remove("active"); });
+    el.classList.add("active");
+}
+
+function closeQV() {
+    document.getElementById("qv-bg").classList.remove("open");
+    document.body.style.overflow = "";
+    qvId = null;
+}
+
+document.getElementById("qv-x").addEventListener("click", closeQV);
+document.getElementById("qv-bg").addEventListener("click", function(e){ if (e.target === this) closeQV(); });
+document.getElementById("btn-qv-add").addEventListener("click", function(){ if (qvId) { addToCart(qvId); closeQV(); } });
+document.getElementById("btn-qv-wish").addEventListener("click", function(){
+    if (!qvId) return;
+    var idx = state.wishlist.indexOf(qvId);
+    if (idx > -1) { state.wishlist.splice(idx, 1); this.textContent = "🤍"; }
+    else { state.wishlist.push(qvId); this.textContent = "❤️"; }
+    localStorage.setItem("gamex-wish", JSON.stringify(state.wishlist));
+});
+document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeQV(); });
+
+/* ═══════════════════════════════════
+   INIT
+═══════════════════════════════════ */
+document.addEventListener("DOMContentLoaded", render);
+</script>
+</body>
+</html>
