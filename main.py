@@ -20,8 +20,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Cliente Gemini: clave leida desde .env
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 # Configuracion MySQL: credenciales leidas desde .env
 db_config = {
@@ -124,9 +123,9 @@ async def newsletter_endpoint(req: NewsletterRequest):
 @app.post("/chat")
 async def chat_endpoint(request: ChatRequest):
     try:
-        # Houni Gemini bech ta9ra el DB kemel k-context
+        client = genai.Client(api_key=GEMINI_API_KEY)
         full_knowledge_base = get_all_store_data()
-        
+
         prompt = f"""
         Eres el cerebro inteligente de GameXStore. Tienes acceso a toda nuestra base de datos abajo.
         
