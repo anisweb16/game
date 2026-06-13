@@ -84,9 +84,9 @@
             var header = document.querySelector("header");
             if (!header || document.getElementById("gc-btn")) return;
 
-            /* Detect path depth for link */
-            var depth = window.location.pathname.split("/").filter(Boolean).length;
-            var base  = depth > 1 ? "../" : "";
+            /* Detect if inside a subdirectory (e.g. blog/) */
+            var inSubdir = window.location.pathname.split("/").some(function(p){ return p === "blog"; });
+            var base = inSubdir ? "../" : "";
 
             var btn = document.createElement("a");
             btn.id        = "gc-btn";
