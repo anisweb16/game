@@ -55,10 +55,10 @@ def get_all_store_data():
         conn = mysql.connector.connect(**db_config)
         cursor = conn.cursor(dictionary=True)
         
-        # 1. Jib el Produits kol
-        cursor.execute("SELECT nombre, precio, descripcion FROM productos")
+        # 1. Jib el Produits kol (nombre + precio solo, sin descripcion larga)
+        cursor.execute("SELECT nombre, precio, categoria FROM productos")
         for row in cursor.fetchall():
-            all_info += f"PRODUCTO: {row['nombre']} | PRECIO: {row['precio']}€ | INFO: {row['descripcion']}\n"
+            all_info += f"{row['categoria'].upper()}: {row['nombre']} {row['precio']}€\n"
             
         # 2. Jib el FAQ kol
         cursor.execute("SELECT pregunta, respuesta FROM faq")
@@ -130,30 +130,18 @@ async def chat_endpoint(request: ChatRequest):
     try:
         full_knowledge_base = get_all_store_data()
 
-        prompt = f"""
-        Eres el cerebro inteligente de GameXStore. Tienes acceso a toda nuestra base de datos abajo.
-        
-        TU MISIÓN:
-        Entiende lo que el cliente quiere (su intención), busca en los datos que te doy y responde de forma natural.
-        No importa si el cliente escribe mucho o poco, extrae tú la información relevante.
-
-        BASE DE DATOS COMPLETA:
-        {full_knowledge_base}
-        
-        PREGUNTA DEL CLIENTE: "{request.message}"
-        
-        INSTRUCCIONES:
-        - Si te preguntan por horarios, busca en INFO TIENDA.
-        - Si te preguntan por juegos específicos (como Zelda), busca en PRODUCTOS.
-        - Sé amable, breve y profesional. Responde siempre en Español.
-        """
+        prompt = f"""Eres el asistente de GameXStore. Datos de la tienda:
+{full_knowledge_base}
+Pregunta: "{request.message}"
+Responde en español, breve y amable."""
         
         response = client.models.generate_content(
-            model="gemini-flash-latest", 
+            model="gemini-flash-lite-latest",
             contents=prompt
         )
         
         return {"response": response.text}
         
     except Exception as e:
+        print(f"[CHAT ERROR] {e}", flush=True)
         return {"response": "Error técnico, por favor intenta más tarde."}
